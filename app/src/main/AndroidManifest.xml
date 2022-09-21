@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.godspeed.athena">
+=======
     xmlns:tools="http://schemas.android.com/tools">
+>>>>>>> 3529326431ebef89ebf7f7624f2f359247c78d89
 
     <application
         android:allowBackup="true"
@@ -22,10 +27,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+<<<<<<< HEAD
+=======
 
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+>>>>>>> 3529326431ebef89ebf7f7624f2f359247c78d89
         </activity>
     </application>
 
