@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.text.TextStyle
@@ -34,19 +35,35 @@ fun PromtScreen() {
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextField(
-            shape = RoundedCornerShape(10),
-            modifier = Modifier
-                .padding(top = 50.dp)
-                .border(color = Color(0xFFFF772A) , width = 4.dp , shape = RoundedCornerShape(12),)
-                .fillMaxWidth(0.8f)
-                .fillMaxHeight(0.40f),
-            value = text,
-            label = { Text(text = "Enter Your Prompt here" , style = TextStyle(color = Color.White) ,textAlign = TextAlign.Center, modifier = Modifier.padding(all = 15.dp) ) },
-            onValueChange = {
-                text = it
-            }
-        )
+        ProvideTextStyle(TextStyle(color = Color.White)) {
+            OutlinedTextField(
+                maxLines = 3,
+                shape = RoundedCornerShape(12),
+                modifier = Modifier
+                    .padding(top = 50.dp)
+                    .fillMaxWidth(0.8f)
+                    .fillMaxHeight(0.40f),
+//                    .border(
+//                        color = Color(0xFFFF772A),
+//                        width = 4.dp,
+//                        shape = RoundedCornerShape(12),
+//                    ),
+                value = text,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0xFFFF772A), unfocusedBorderColor = Color(0xFFFF772A)),
+                label = {
+                    Text(
+                        text = "Enter Your Prompt here",
+                        style = TextStyle(color = Color.White, fontSize = 23.sp),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(all = 11.dp)
+                    )
+                },
+                onValueChange = {
+                    text = it
+                }
+            )
+        }
         Spacer(modifier = Modifier.size(30.dp))
         Button(onClick = {
             /*
