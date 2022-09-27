@@ -81,8 +81,8 @@ fun PromtScreen() {
             }
         }
     }
-    @Composable
-    @Preview(showBackground = true)
-    fun promtscreenpri() {
-        PromtScreen()
-    }
+//    @Composable
+//    @Preview(showBackground = true)
+//    fun promtscreenpri() {
+//        PromtScreen()
+//    }

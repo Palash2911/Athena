@@ -27,7 +27,7 @@ fun Navigation() {
                 }
             )
         ){
-            entry -> SelectioScreen(name = entry.arguments?.getString("name"))
+            entry -> SelectioScreen()
         }
     }
 }

@@ -1,35 +1,108 @@
 package com.gdsc.athena
-
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
-fun SelectioScreen(name: String?){
-//    Box(
-//        modifier = Modifier.fillMaxSize()
-//            .background(color = Color(0xFF3F4043)),
-//        contentAlignment = Alignment.Center
-//    )
-//    {
-//        Text(
-//            text = "home",
-//            color = Color.Red,
-//            fontWeight = FontWeight.Bold,
-//            fontSize = MaterialTheme.typography.h3.fontSize,
-//        )
-//    }
+fun SelectioScreen(){
+    Column(modifier = Modifier.fillMaxHeight()) {
+        Box(modifier = Modifier.fillMaxSize().weight(0.2f).background(color = Color(0xFF1D1D1D)),
+                contentAlignment = Alignment.BottomStart
+            ){
+            Text(
+                text = "Categories", style = TextStyle(fontSize = 50.sp,color = Color(0xFFFFFFFF)),modifier = Modifier.padding(start = 34.dp, bottom = 32.dp)
+            )}
+        LazyColumn(
+            Modifier
+                .fillMaxSize().weight(0.8f)
+                .background(color = Color(0xFF1D1D1D)),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                CustomButton(
+                    name = "Sci-Fi",
+                    painter = painterResource(id = R.drawable.sci_fi__2_b)
+                )
+            }
+            item {
+                CustomButton(
+                    name = "Action",
+                    painter = painterResource(id = R.drawable.actionbb)
+                )
+            }
+            item {
+                CustomButton(
+                    name = "Romantic",
+                    painter = painterResource(id = R.drawable.romanticsb)
+                )
+            }
+            item {
+                CustomButton(
+                    name = "Comedy",
+                    painter = painterResource(id = R.drawable.comedyb)
+                )
+            }
+            item {
+                CustomButton(
+                    name = "Mystery",
+                    painter = painterResource(id = R.drawable.myterib)
+                )
+            }
+            item {
+                CustomButton(
+                    name = "Horror",
+                    painter = painterResource(id = R.drawable.horrorb)
+                )
+            }
+        }
+    }
 }
 
-//@Composable
-//@Preview(showBackground = true)
-//fun SelectionScreenpre(){
-//    SelectioScreen()
-//}
+@Composable
+fun CustomButton(name: String, painter: Painter, modifier: Modifier = Modifier, ){
+    Card(
+        modifier
+            .padding(12.dp)
+            .fillMaxWidth(0.9f)
+            .background(color = Color(0xFF1D1D1D))
+            .border(width = 3.dp, color = Color(0xFF1D1D1D), shape = RoundedCornerShape(22.dp))
+            .clip(shape = RoundedCornerShape(16.dp)),
+
+        shape = RoundedCornerShape(22.dp)
+    ) {
+        Box(modifier = Modifier
+            .height(100.dp)
+            .clip(RoundedCornerShape(22.dp))
+            .background(color = Color(0xFF1D1D1D)),) {
+            Image(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(22.dp))
+                    .background(color = Color(0xFF1D1D1D)),
+                painter = painter,
+                contentDescription = name,
+                contentScale = ContentScale.Crop
+            )
+            Box(modifier = Modifier
+                .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = name, style = TextStyle(color = Color.White, fontSize = 40.sp, fontWeight = FontWeight.Medium))
+            }
+        }
+    }
+}

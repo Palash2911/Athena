@@ -64,7 +64,7 @@ fun HomeScreen(navController: NavController?) {
                    .clickable { }
            ) {
                Image(
-           painter = painterResource(R.drawable.ic_launcher_background),
+           painter = painterResource(R.drawable.logo2__1_),
            contentDescription = "avatar",
            contentScale = ContentScale.Crop,            // crop the image if it's not a square
            modifier = Modifier
@@ -125,7 +125,7 @@ fun HomeScreen(navController: NavController?) {
 //        }
 //    }
 //}
-
+//
 //@Composable
 //@Preview(showBackground = true)
 //fun homescreenpre(){
