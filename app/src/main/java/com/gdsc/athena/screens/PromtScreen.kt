@@ -24,7 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun PromtScreen() {
+fun PromtScreen(
+    onNextButtonClicked: () -> Unit,
+) {
     var text by remember {
         mutableStateOf("")
     }
@@ -66,12 +68,7 @@ fun PromtScreen() {
         }
         Spacer(modifier = Modifier.size(30.dp))
         Button(onClick = {
-            /*
-
-           to the Display Screen
-
-            */
-
+           onNextButtonClicked()
         },shape = RoundedCornerShape(16), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)), modifier = Modifier
             .fillMaxWidth(0.8f)
             .fillMaxHeight(0.18f)) {

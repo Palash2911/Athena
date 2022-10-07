@@ -18,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SelectioScreen(){
+fun SelectionScreen(
+    onNextButtonClicked: () -> Unit,
+){
     Column(modifier = Modifier.fillMaxHeight()) {
         Box(modifier = Modifier.fillMaxSize().weight(0.2f).background(color = Color(0xFF1D1D1D)),
                 contentAlignment = Alignment.BottomStart
@@ -33,6 +35,7 @@ fun SelectioScreen(){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
+                onNextButtonClicked()
                 CustomButton(
                     name = "Sci-Fi",
                     painter = painterResource(id = R.drawable.sci_fi__2_b)
