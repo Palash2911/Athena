@@ -9,6 +9,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,6 +24,8 @@ enum class TitleSc(val title: String) {
     Start(title = R.string.app_name.toString()),
     PromtS(title = "Prompt Screen"),
     SelectionSc(title = "Choose Category"),
+    GeneratedS(title = "Generated story"),
+    ProfileS(title = "Profile")
 //    Summary(title = R.string.order_summary)
 }
 
@@ -66,18 +69,31 @@ fun LoginScreens(
         composable(route = TitleSc.Start.name) {
             LoginScreen(
                 onNextButtonClicked = {
-                    navController.navigate(TitleSc.PromtS.name)
+                    navController.navigate(TitleSc.ProfileS.name)
                 }
             )
         }
         composable(route = TitleSc.PromtS.name) {
             val context = LocalContext.current
             PromtScreen(
-                onNextButtonClicked = { navController.navigate(TitleSc.SelectionSc.name) },
+                onNextButtonClicked = {  navController.navigate(TitleSc.GeneratedS.name )},
             )
         }
         composable(route = TitleSc.SelectionSc.name) {
+            val context = LocalContext.current
             SelectionScreen(
+                onNextButtonClicked = { navController.navigate(TitleSc.PromtS.name) },
+            )
+        }
+        composable(route = TitleSc.GeneratedS.name) {
+            val context = LocalContext.current
+            genretedtScreen(
+                onNextButtonClicked = { navController.navigate(TitleSc.ProfileS.name) },
+            )
+        }
+        composable(route = TitleSc.ProfileS.name) {
+            val context = LocalContext.current
+            ProfileScreen(
                 onNextButtonClicked = { navController.navigate(TitleSc.SelectionSc.name) },
             )
         }

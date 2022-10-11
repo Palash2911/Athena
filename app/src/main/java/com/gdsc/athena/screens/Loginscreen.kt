@@ -18,12 +18,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key.Companion.G
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -42,6 +45,9 @@ fun LoginScreen(
     onNextButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ){
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
     Column(modifier = Modifier
         .fillMaxSize()
         .background(color = Color(0xFF1D1D1D))
@@ -96,14 +102,13 @@ fun LoginScreen(
         },shape = RoundedCornerShape(24), colors = buttonColors(backgroundColor = Color(0XFFFF772A)), modifier = Modifier
             .fillMaxWidth(0.8f)
             .fillMaxHeight(0.24f)) {
-            Row(modifier = Modifier.fillMaxSize()){
-                Text(text = "G" , style = TextStyle(fontSize = 45.sp , color = Color(0xFFFCFBF7) , fontWeight = FontWeight.ExtraBold) , modifier = Modifier
-                    .fillMaxWidth(0.2f)
-                    .fillMaxHeight()
-                    .wrapContentSize(Alignment.CenterStart),textAlign = TextAlign.Center)
-                Text(text = "Login using Google" ,style = TextStyle(fontSize = 25.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
-                    .fillMaxHeight()
-                    .wrapContentSize(Alignment.Center), textAlign = TextAlign.Center,)
+            Row(modifier = Modifier.fillMaxSize().align(alignment = Alignment.CenterVertically), ){ Image(
+                modifier= Modifier.fillMaxHeight().fillMaxWidth(0.2f),
+                painter = painterResource(id = R.drawable.g),
+                contentDescription = ""
+            )
+                Text(text = "Login using Google" ,style = TextStyle(fontSize = 20.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
+                    .wrapContentSize().fillMaxSize(), textAlign = TextAlign.Center,)
             }
         }
         Spacer(modifier = Modifier.size(20.dp))
