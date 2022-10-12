@@ -12,9 +12,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-<<<<<<< HEAD
 rootProject.name = "Athena"
-=======
-rootProject.name = "athena"
->>>>>>> 3529326431ebef89ebf7f7624f2f359247c78d89
+
 include ':app'
