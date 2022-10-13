@@ -71,7 +71,6 @@ fun LoginScreens(
         navController = navController,
         startDestination = if(auth.currentUser!=null){TitleSc.ProfileS.name}else{TitleSc.Start.name},
     ) {
-        Log.d("asjddfoh", auth.currentUser.toString())
         composable(route = TitleSc.Start.name) {
             LoginScreen(
                 onNextButtonClicked = {
