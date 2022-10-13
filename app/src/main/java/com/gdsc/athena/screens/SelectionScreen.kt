@@ -1,6 +1,7 @@
 package com.gdsc.athena
 
 import android.R.attr.contentDescription
+import android.content.Intent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.sp
 fun SelectionScreen(
     onNextButtonClicked: () -> Unit,
 ){
+    val context = LocalContext.current
     Column(modifier = Modifier.fillMaxHeight()) {
         Row(Modifier.fillMaxWidth().height(100.dp).background(Color(0xFF1D1D1D))) {
             Box(
@@ -58,6 +61,7 @@ fun SelectionScreen(
                 .background(color = Color(0xFF1D1D1D)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+//            val intent= Intent(context, PromtScreen::)
             item {
                 Modifier.clickable(onClick = {print("clicked")})
                 CustomButton(
@@ -67,7 +71,8 @@ fun SelectionScreen(
                 )
             }
             item {
-                Modifier.clickable(onClick = {onNextButtonClicked()})
+                Modifier.clickable(onClick = {
+                    onNextButtonClicked() })
                 CustomButton(
                     name = "Action",
                     painter = painterResource(id = R.drawable.actionbb)
@@ -95,7 +100,7 @@ fun SelectionScreen(
                 )
             }
             item {
-                Modifier.clickable(onClick = {onNextButtonClicked()})
+                Modifier.clickable(onClick = { onNextButtonClicked() })
                 CustomButton(
                     name = "Horror",
                     painter = painterResource(id = R.drawable.horrorb)
