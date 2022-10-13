@@ -1,5 +1,6 @@
 package com.gdsc.athena
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,30 +8,33 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key.Companion.G
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,12 +43,21 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun LoginScreen(
     onNextButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ){
+    val auth = FirebaseAuth.getInstance()
+    val db = Firebase.firestore
+    val profile:HashMap<String, Any> = HashMap()
+    val emailVal = remember { mutableStateOf(TextFieldValue()) }
+    val passwdVal = remember { mutableStateOf(TextFieldValue()) }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
@@ -82,7 +95,7 @@ fun LoginScreen(
                     contentDescription = "avatar",
                     contentScale = ContentScale.Crop,            // crop the image if it's not a square
                     modifier = Modifier
-                        .size(100.dp)
+                        .size(70.dp)
                         .clip(CircleShape)
                         .background(
                             brush = Brush.radialGradient(
@@ -95,20 +108,61 @@ fun LoginScreen(
                 )
             }
         }
-        Spacer(modifier = Modifier.size(100.dp))
+        OutlinedTextField(
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
+            value = emailVal.value,
+            singleLine = true,
+            modifier = Modifier.width(200.dp),
+            onValueChange = {
+                emailVal.value = it
+            }
+        )
+        Spacer(modifier = Modifier.size(10.dp))
+        OutlinedTextField(
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            value = passwdVal.value,
+            singleLine = true,
+            modifier = Modifier.width(200.dp),
+            visualTransformation = PasswordVisualTransformation(),
+            onValueChange = {
+                passwdVal.value = it
+            }
+        )
+        Spacer(modifier = Modifier.size(20.dp))
         Button(onClick = {
 //            navController.navigate(TitleSc.PromtS.name)
-            onNextButtonClicked()
+            auth.createUserWithEmailAndPassword(
+                emailVal.value.text,
+                passwdVal.value.text
+            ).addOnSuccessListener {
+                profile["Name"] = "Palash"
+                profile["Number"] = "12345678"
+                Log.d("TUIDD", auth.currentUser?.uid.toString())
+                db.collection("Users").document(auth.currentUser?.uid.toString()).set(profile)
+                    .addOnSuccessListener {
+                        onNextButtonClicked()
+                    }.addOnFailureListener {
+                        Log.d("FAILED!", it.toString())
+                    }
+            }.addOnFailureListener {
+                Log.d("FAILED!", it.toString())
+            }
+
         },shape = RoundedCornerShape(24), colors = buttonColors(backgroundColor = Color(0XFFFF772A)), modifier = Modifier
             .fillMaxWidth(0.8f)
             .fillMaxHeight(0.24f)) {
-            Row(modifier = Modifier.fillMaxSize().align(alignment = Alignment.CenterVertically), ){ Image(
-                modifier= Modifier.fillMaxHeight().fillMaxWidth(0.2f),
+            Row(modifier = Modifier
+                .fillMaxSize()
+                .align(alignment = Alignment.CenterVertically), ){ Image(
+                modifier= Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(0.2f),
                 painter = painterResource(id = R.drawable.g),
                 contentDescription = ""
             )
                 Text(text = "Login using Google" ,style = TextStyle(fontSize = 20.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
-                    .wrapContentSize().fillMaxSize(), textAlign = TextAlign.Center,)
+                    .wrapContentSize()
+                    .fillMaxSize(), textAlign = TextAlign.Center,)
             }
         }
         Spacer(modifier = Modifier.size(20.dp))

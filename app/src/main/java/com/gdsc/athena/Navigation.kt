@@ -1,6 +1,7 @@
 package com.gdsc.athena
 
 import android.icu.text.CaseMap.Title
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -19,6 +20,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.gdsc.athena.ui.PromtScreen
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 enum class TitleSc(val title: String) {
     Start(title = R.string.app_name.toString()),
@@ -57,6 +61,7 @@ fun LoginScreens(
     navController: NavHostController = rememberNavController()
 )
 {
+    val auth = FirebaseAuth.getInstance()
     val backStackEntry by navController.currentBackStackEntryAsState()
     // Get the name of the current screen
     val currentScreen = TitleSc.valueOf(
@@ -64,8 +69,9 @@ fun LoginScreens(
     )
     NavHost(
         navController = navController,
-        startDestination = TitleSc.Start.name,
+        startDestination = if(auth.currentUser!=null){TitleSc.ProfileS.name}else{TitleSc.Start.name},
     ) {
+        Log.d("asjddfoh", auth.currentUser.toString())
         composable(route = TitleSc.Start.name) {
             LoginScreen(
                 onNextButtonClicked = {
