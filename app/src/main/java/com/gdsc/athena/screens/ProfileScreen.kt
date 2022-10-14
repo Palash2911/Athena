@@ -36,13 +36,26 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
     val auth = FirebaseAuth.getInstance()
     val db = Firebase.firestore
     var name by remember { mutableStateOf("")}
-    var email by remember { mutableStateOf("") }
+    var email by remember {mutableStateOf("")}
+    val Cat = mutableListOf<String>("")
+    val Pro by remember { mutableStateOf(mutableListOf(""))}
+    val Stor by remember { mutableStateOf(mutableListOf(""))}
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .background(color = Color(0xFF1D1D1D)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        db.collection("Users").document(auth.currentUser?.uid.toString())
+                .collection("Saved").get()
+                .addOnSuccessListener {
+                    for(ss in it){
+                        Cat.add(ss.get("Category").toString())
+                        Pro.add(ss.get("Prompt").toString())
+                        Stor.add(ss.get("Story").toString())
+                    }
+                }
+        Log.d("Carte", Cat.toString())
         db.collection("Users").document(auth.currentUser?.uid.toString())
                 .get().addOnSuccessListener {
                     name = it["FName"].toString() + " " + it["LName"].toString()
@@ -119,7 +132,7 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
         ) {
             item {
                 CustomPrompt(
-                    type = "Sci-Fi",
+                    type = Cat[0],
                     prompt = "Mama mia its mario ",
                     story = "I'm so angry with you right now! I can't believe you would agree to play Mario in the upcoming movie. Mario is one of my all-time favorite video game characters and you are just ruining him!\n" +
                             "\n" +

@@ -103,7 +103,6 @@ fun genretedtScreen(
                 shape = RoundedCornerShape(35.dp),
                 border = BorderStroke(4.dp, color = Color(0xFFEF5B0C))
             ) {
-
                 TextField(
 //                    modifier = Modifier.padding(start = 4.dp, top = 10.dp, bottom = 18.dp),
                     label = {
@@ -114,7 +113,7 @@ fun genretedtScreen(
                             modifier = Modifier.padding(all = 16.dp)
                         )
                     },
-                    value = story,
+                    value = text,
                         onValueChange = { newText ->
                             text = newText
                         },
