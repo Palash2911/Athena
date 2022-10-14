@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -12,8 +13,11 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -31,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+
 @Composable
 fun ProfileScreen(onNextButtonClicked:()->Unit){
     val auth = FirebaseAuth.getInstance()
@@ -46,6 +51,7 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
             .background(color = Color(0xFF1D1D1D)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         db.collection("Users").document(auth.currentUser?.uid.toString())
                 .collection("Saved").get()
                 .addOnSuccessListener {
@@ -64,6 +70,14 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
                     Log.d("FAILED!", it.toString())
                 }
         Log.d("asdf", name+email)
+        Icon(Icons.Filled.ExitToApp, "Logout",Modifier.size(65.dp).align(Start).padding(all =15.dp).clickable(onClick = {
+
+            //
+
+
+        }),
+            Color.Red
+        )
         Spacer(modifier = Modifier.size(60.dp))
         Surface(
             shape = CircleShape,
@@ -92,10 +106,11 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
         Text(text = name ,style = TextStyle(fontSize = 30.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
             .wrapContentSize(Alignment.Center), textAlign = TextAlign.Center,)
         Spacer(modifier = Modifier.size(4.dp))
-        Text(text = email , style = TextStyle(fontSize = 20.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth(0.7f))
+        Row(Modifier.fillMaxWidth().height(35.dp), verticalAlignment = Alignment.CenterVertically) { Text(text = "deez@gmail.com" , style = TextStyle(fontSize = 20.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth()) }
+
         Box(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp),
+            .padding(top = 5.dp),
             contentAlignment = Alignment.CenterStart
         ) {
             Row(Modifier.fillMaxWidth()) {
@@ -157,7 +172,6 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
         }
     }
 }
-
 @Composable
 fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modifier = Modifier, ){
     Card(
@@ -174,11 +188,13 @@ fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modif
         Column(modifier = Modifier.background(color=Color(0xFF1A1A1A))) {
             Text(text = type ,style = TextStyle(fontSize = 28.sp, color = Color(0xFFFFFFFF )), modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 2.dp), textAlign = TextAlign.Center,)
-            Text(text = prompt , style = TextStyle(fontSize = 18.sp ,color = Color.White , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth().padding(horizontal = 9.dp), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                .padding(horizontal = 2.dp, vertical = 3.dp), textAlign = TextAlign.Center,)
+            Text(text = prompt , style = TextStyle(fontSize = 18.sp ,color = Color.White , textAlign = TextAlign.Center) , modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 9.dp), maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(text = story , style = TextStyle(fontSize = 14.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 9.dp), maxLines = 4, overflow = TextOverflow.Ellipsis)
+                .padding(horizontal = 9.dp), maxLines = 3, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(5.dp))
         }
     }

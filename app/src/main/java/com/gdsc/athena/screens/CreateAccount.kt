@@ -18,13 +18,16 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
@@ -172,5 +175,20 @@ fun createAccount( onNextButtonClicked: () -> Unit,
             )
         }
         Spacer(modifier = Modifier.size(20.dp))
+        Text(
+            modifier = Modifier.fillMaxWidth(0.7f),
+            text = buildAnnotatedString {
+                append("already have an account ? ,")
+                Modifier.clickable(onClick = {})
+                withStyle(style = SpanStyle(
+                    color = Color.Blue ,
+                    textDecoration = TextDecoration.Underline
+                )
+                ){
+                    append("log in ")
+                }
+            },
+            style = TextStyle(color = Color.Gray, textAlign = TextAlign.Center),
+        )
     }
 }
