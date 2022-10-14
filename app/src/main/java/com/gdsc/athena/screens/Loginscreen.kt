@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,19 +53,20 @@ import com.google.firebase.ktx.Firebase
 fun LoginScreen(
     onNextButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
-){
+) {
     val auth = FirebaseAuth.getInstance()
     val db = Firebase.firestore
-    val profile:HashMap<String, Any> = HashMap()
+    val profile: HashMap<String, Any> = HashMap()
     val emailVal = remember { mutableStateOf(TextFieldValue()) }
     val passwdVal = remember { mutableStateOf(TextFieldValue()) }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color(0xFF1D1D1D))
-        .padding(top = 120.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0xFF1D1D1D))
+            .padding(top = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -109,10 +111,22 @@ fun LoginScreen(
             }
         }
         OutlinedTextField(
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next
+            ),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF772A), unfocusedBorderColor = Color(0xFFFF772A)),
+            label = {
+                Text(
+                    text = "Email",
+                    style = TextStyle(color = Color.Gray),
+                    modifier = Modifier.fillMaxWidth(0.2f)
+                )
+            },
             value = emailVal.value,
             singleLine = true,
-            modifier = Modifier.width(200.dp),
+            modifier = Modifier.fillMaxWidth(0.8f),
             onValueChange = {
                 emailVal.value = it
             }
@@ -120,55 +134,69 @@ fun LoginScreen(
         Spacer(modifier = Modifier.size(10.dp))
         OutlinedTextField(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF772A), unfocusedBorderColor = Color(0xFFFF772A)),
+            label = {
+                Text(
+                    text = "Password",
+                    style = TextStyle(color = Color.Gray),
+                    modifier = Modifier.fillMaxWidth(0.3f)
+                )
+            },
             value = passwdVal.value,
             singleLine = true,
-            modifier = Modifier.width(200.dp),
+            modifier = Modifier.fillMaxWidth(0.8f),
             visualTransformation = PasswordVisualTransformation(),
             onValueChange = {
                 passwdVal.value = it
             }
         )
         Spacer(modifier = Modifier.size(20.dp))
-        Button(onClick = {
+        Button(
+            onClick = {
 //            navController.navigate(TitleSc.PromtS.name)
-            auth.createUserWithEmailAndPassword(
-                emailVal.value.text,
-                passwdVal.value.text
-            ).addOnSuccessListener {
-                profile["Name"] = "Palash"
-                profile["Number"] = "12345678"
-                Log.d("TUIDD", auth.currentUser?.uid.toString())
-                db.collection("Users").document(auth.currentUser?.uid.toString()).set(profile)
-                    .addOnSuccessListener {
-                        onNextButtonClicked()
-                    }.addOnFailureListener {
-                        Log.d("FAILED!", it.toString())
-                    }
-            }.addOnFailureListener {
-                Log.d("FAILED!", it.toString())
-            }
-
-        },shape = RoundedCornerShape(24), colors = buttonColors(backgroundColor = Color(0XFFFF772A)), modifier = Modifier
-            .fillMaxWidth(0.8f)
-            .fillMaxHeight(0.24f)) {
-            Row(modifier = Modifier
-                .fillMaxSize()
-                .align(alignment = Alignment.CenterVertically), ){ Image(
-                modifier= Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth(0.2f),
-                painter = painterResource(id = R.drawable.g),
-                contentDescription = ""
+                auth.createUserWithEmailAndPassword(
+                    emailVal.value.text,
+                    passwdVal.value.text
+                ).addOnSuccessListener {
+                    profile["Name"] = "Palash"
+                    profile["Number"] = "12345678"
+                    Log.d("TUIDD", auth.currentUser?.uid.toString())
+                    db.collection("Users").document(auth.currentUser?.uid.toString()).set(profile)
+                        .addOnSuccessListener {
+                            onNextButtonClicked()
+                        }.addOnFailureListener {
+                            Log.d("FAILED!", it.toString())
+                        }
+                }.addOnFailureListener {
+                    Log.d("FAILED!", it.toString())
+                }
+            },
+            shape = RoundedCornerShape(24),
+            colors = buttonColors(backgroundColor = Color(0XFFFF772A)),
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .fillMaxHeight(0.17f)
+        )
+        {
+            Text(
+                text = "Login", style = TextStyle(fontSize = 20.sp, color = Color(0xFFFCFBF7)),
+                modifier = Modifier
+                    .fillMaxWidth().fillMaxWidth(),
+                textAlign = TextAlign.Center,
             )
-                Text(text = "Login using Google" ,style = TextStyle(fontSize = 20.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
-                    .wrapContentSize()
-                    .fillMaxSize(), textAlign = TextAlign.Center,)
-            }
         }
         Spacer(modifier = Modifier.size(20.dp))
-        Text(text = "This account will be used to save your generated stories." , style = TextStyle(color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth(0.7f))
+        Text(
+            modifier = Modifier.fillMaxWidth(0.7f).clickable(onClick = {
+                // to create new account page
+            }),
+            text = "Or sign-up by creating a new account",
+            style = TextStyle(color = Color.Blue, textAlign = TextAlign.Center,textDecoration = TextDecoration.Underline),
+        )
     }
 }
+
 //fun HomeScreen(navController: NavController) {
 //    var text by remember {
 //        mutableStateOf("")

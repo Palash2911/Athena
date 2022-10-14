@@ -31,21 +31,21 @@ fun SelectionScreen(
 ){
     val context = LocalContext.current
     Column(modifier = Modifier.fillMaxHeight()) {
-        Row(Modifier.fillMaxWidth().height(100.dp).background(Color(0xFF1D1D1D))) {
+        Row(Modifier.fillMaxWidth().height(100.dp).background(Color(0xFF1D1D1D)), verticalAlignment = Alignment.CenterVertically) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(0.2f)
+                    .weight(0.5f)
                     .background(color = Color(0xFF1D1D1D)),
                 contentAlignment = Alignment.BottomStart
             ) {
                 Text(
                     text = "Categories",
                     style = TextStyle(fontSize = 50.sp, color = Color(0xFFFFFFFF)),
-                    modifier = Modifier.padding(start = 34.dp, bottom = 32.dp)
+                    modifier = Modifier.padding(start = 34.dp, bottom = 15.dp)
                 )
             }
-            Button(onClick = {onNextButtonClicked()},Modifier.padding(all =12.dp)) {
+            Button(onClick = {onNextButtonClicked()},Modifier.padding(all =12.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A))) {
 //                Icon(Icons.Filled.ArrowForward)
                 Icon(
                     Icons.Filled.ArrowForward,

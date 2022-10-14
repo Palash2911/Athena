@@ -1,8 +1,5 @@
 package com.gdsc.athena
 
-import android.icu.text.CaseMap.Title
-import android.util.Log
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -10,7 +7,6 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,20 +15,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.gdsc.athena.screens.createAccount
 import com.gdsc.athena.ui.PromtScreen
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-
 enum class TitleSc(val title: String) {
     Start(title = R.string.app_name.toString()),
     PromtS(title = "Prompt Screen"),
     SelectionSc(title = "Choose Category"),
     GeneratedS(title = "Generated story"),
-    ProfileS(title = "Profile")
+    ProfileS(title = "Profile"),
+    CreateS(title = "Create new account")
 //    Summary(title = R.string.order_summary)
 }
-
 @Composable
 fun HomeScreen(
     currentScreen: TitleSc,
@@ -53,7 +47,6 @@ fun HomeScreen(
         }
     )
 }
-
 @Composable
 fun LoginScreens(
     modifier: Modifier = Modifier,
@@ -100,6 +93,12 @@ fun LoginScreens(
             val context = LocalContext.current
             ProfileScreen(
                 onNextButtonClicked = { navController.navigate(TitleSc.SelectionSc.name) },
+            )
+        }
+        composable(route = TitleSc.CreateS.name) {
+            val context = LocalContext.current
+            createAccount(
+                onNextButtonClicked = { navController.navigate(TitleSc.ProfileS.name) },
             )
         }
     }
