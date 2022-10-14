@@ -76,12 +76,16 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
                     modifier = Modifier.padding(start = 25.dp),
                     textAlign = TextAlign.Start
                 )
-                Button(onClick = { onNextButtonClicked() }, Modifier.padding(all = 12.dp).height(30.dp)) {
+                Button(onClick = { onNextButtonClicked() },
+                    Modifier
+                        .padding(all = 12.dp)
+                        .height(35.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)),) {
                     Text(
-                        text = "Create more stories",
+                        text = "Create",
                         style = TextStyle(
+                            textAlign = TextAlign.Center,
                             fontSize = 12.sp,
-                            color = Color.LightGray
+                            color = Color.White
                         ),
                     )
                 }
@@ -129,8 +133,8 @@ fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modif
             .padding(12.dp)
             .fillMaxWidth(0.9f)
             .height(180.dp)
-            .background(color = Color.Gray)
-            .border(width = 3.dp, color = Color.Gray, shape = RoundedCornerShape(22.dp))
+            .background(color = Color.Transparent)
+            .border(width = 3.dp, color = Color(0XFFFF772A), shape = RoundedCornerShape(22.dp))
             .clip(shape = RoundedCornerShape(16.dp)),
 
         shape = RoundedCornerShape(22.dp)
@@ -139,10 +143,11 @@ fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modif
             Text(text = type ,style = TextStyle(fontSize = 28.sp, color = Color(0xFFFFFFFF )), modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 2.dp), textAlign = TextAlign.Center,)
-            Text(text = prompt , style = TextStyle(fontSize = 18.sp ,color = Color.White , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth(), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(text = prompt , style = TextStyle(fontSize = 18.sp ,color = Color.White , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth().padding(horizontal = 9.dp), maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(text = story , style = TextStyle(fontSize = 14.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 5.dp), maxLines = 5 , overflow = TextOverflow.Ellipsis)
+                .padding(horizontal = 9.dp), maxLines = 4, overflow = TextOverflow.Ellipsis)
+            Spacer(Modifier.height(5.dp))
         }
     }
 }
