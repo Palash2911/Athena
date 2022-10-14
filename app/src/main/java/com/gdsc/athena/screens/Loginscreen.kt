@@ -52,11 +52,10 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun LoginScreen(
     onNextButtonClicked: () -> Unit,
+    onPrevButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val auth = FirebaseAuth.getInstance()
-    val db = Firebase.firestore
-    val profile: HashMap<String, Any> = HashMap()
     val emailVal = remember { mutableStateOf(TextFieldValue()) }
     val passwdVal = remember { mutableStateOf(TextFieldValue()) }
     val configuration = LocalConfiguration.current
@@ -155,19 +154,11 @@ fun LoginScreen(
         Button(
             onClick = {
 //            navController.navigate(TitleSc.PromtS.name)
-                auth.createUserWithEmailAndPassword(
+                auth.signInWithEmailAndPassword(
                     emailVal.value.text,
                     passwdVal.value.text
                 ).addOnSuccessListener {
-                    profile["Name"] = "Palash"
-                    profile["Number"] = "12345678"
-                    Log.d("TUIDD", auth.currentUser?.uid.toString())
-                    db.collection("Users").document(auth.currentUser?.uid.toString()).set(profile)
-                        .addOnSuccessListener {
-                            onNextButtonClicked()
-                        }.addOnFailureListener {
-                            Log.d("FAILED!", it.toString())
-                        }
+                    onNextButtonClicked()
                 }.addOnFailureListener {
                     Log.d("FAILED!", it.toString())
                 }
@@ -189,10 +180,11 @@ fun LoginScreen(
         Spacer(modifier = Modifier.size(20.dp))
         Text(
             modifier = Modifier.fillMaxWidth(0.7f).clickable(onClick = {
-                // to create new account page
+                onPrevButtonClicked()
             }),
             text = "Or sign-up by creating a new account",
             style = TextStyle(color = Color.Blue, textAlign = TextAlign.Center,textDecoration = TextDecoration.Underline),
+
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.gdsc.athena
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,7 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -20,18 +21,36 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+
 @Composable
 fun ProfileScreen(onNextButtonClicked:()->Unit){
+    val auth = FirebaseAuth.getInstance()
+    val db = Firebase.firestore
+    var name by remember { mutableStateOf("")}
+    var email by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .background(color = Color(0xFF1D1D1D)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        db.collection("Users").document(auth.currentUser?.uid.toString())
+                .get().addOnSuccessListener {
+                    name = it["FName"].toString() + " " + it["LName"].toString()
+                    email = it["Email"].toString()
+                }.addOnFailureListener {
+                    Log.d("FAILED!", it.toString())
+                }
+        Log.d("asdf", name+email)
         Spacer(modifier = Modifier.size(60.dp))
         Surface(
             shape = CircleShape,
@@ -57,10 +76,10 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
             )
         }
         Spacer(modifier = Modifier.size(20.dp))
-        Text(text = "Joe Mama" ,style = TextStyle(fontSize = 30.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
+        Text(text = name ,style = TextStyle(fontSize = 30.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
             .wrapContentSize(Alignment.Center), textAlign = TextAlign.Center,)
         Spacer(modifier = Modifier.size(4.dp))
-        Text(text = "deez@gmail.com" , style = TextStyle(fontSize = 20.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth(0.7f))
+        Text(text = email , style = TextStyle(fontSize = 20.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth(0.7f))
         Box(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp),

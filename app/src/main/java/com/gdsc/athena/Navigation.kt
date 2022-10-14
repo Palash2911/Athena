@@ -68,7 +68,9 @@ fun LoginScreens(
             LoginScreen(
                 onNextButtonClicked = {
                     navController.navigate(TitleSc.ProfileS.name)
-                }
+                }, onPrevButtonClicked = {
+                navController.navigate(TitleSc.CreateS.name)
+            }
             )
         }
         composable(route = TitleSc.PromtS.name) {
@@ -99,6 +101,9 @@ fun LoginScreens(
             val context = LocalContext.current
             createAccount(
                 onNextButtonClicked = { navController.navigate(TitleSc.ProfileS.name) },
+                    onPrevButtonClicked = {
+                navController.navigate(TitleSc.Start.name)
+            }
             )
         }
     }

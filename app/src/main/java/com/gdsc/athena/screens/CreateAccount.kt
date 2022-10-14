@@ -27,11 +27,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun createAccount( onNextButtonClicked: () -> Unit,
+                   onPrevButtonClicked: ()-> Unit,
                    modifier: Modifier = Modifier
 ){
+    val auth = FirebaseAuth.getInstance()
+    val db = Firebase.firestore
+    val profile: HashMap<String, Any> = HashMap()
     var firstname by remember { mutableStateOf(TextFieldValue("")) }
     var lastname by remember { mutableStateOf(TextFieldValue("")) }
     var email by remember { mutableStateOf(TextFieldValue("")) }
@@ -53,7 +60,7 @@ fun createAccount( onNextButtonClicked: () -> Unit,
             ),
             label = {
                 Text(
-                    text = "first name",
+                    text = "First Name",
                     style = TextStyle(color = Color.Gray),
                     modifier = Modifier.fillMaxWidth(0.27f)
                 )
@@ -67,13 +74,13 @@ fun createAccount( onNextButtonClicked: () -> Unit,
         )
         Spacer(modifier = Modifier.size(20.dp))
         OutlinedTextField(
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0xFFFF772A), unfocusedBorderColor = Color(0xFFFF772A)
             ),
             label = {
                 Text(
-                    text = "last name",
+                    text = "Last Name",
                     style = TextStyle(color = Color.Gray),
                     modifier = Modifier.fillMaxWidth(0.27f)
                 )
@@ -110,7 +117,7 @@ fun createAccount( onNextButtonClicked: () -> Unit,
         )
         Spacer(modifier = Modifier.size(20.dp))
         OutlinedTextField(
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0xFFFF772A), unfocusedBorderColor = Color(0xFFFF772A)
             ),
@@ -132,8 +139,23 @@ fun createAccount( onNextButtonClicked: () -> Unit,
         Spacer(modifier = Modifier.size(60.dp))
         Button(
             onClick = {
-
-
+                auth.createUserWithEmailAndPassword(
+                        email.text,
+                        password.text
+                ).addOnSuccessListener {
+                    profile["FName"] = firstname.text
+                    profile["LName"] = lastname.text
+                    profile["UID"] = auth.currentUser?.uid.toString()
+                    profile["Email"] = email.text
+                    db.collection("Users").document(auth.currentUser?.uid.toString())
+                            .set(profile).addOnSuccessListener {
+                                onNextButtonClicked()
+                            }.addOnFailureListener {
+                                Log.d("Add db", it.toString())
+                            }
+                }.addOnFailureListener {
+                    Log.d("Email Create", it.toString())
+                }
             },
             shape = RoundedCornerShape(24),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)),
