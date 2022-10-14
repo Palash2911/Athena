@@ -179,7 +179,9 @@ fun createAccount( onNextButtonClicked: () -> Unit,
             modifier = Modifier.fillMaxWidth(0.7f),
             text = buildAnnotatedString {
                 append("already have an account ? ,")
-                Modifier.clickable(onClick = {})
+                Modifier.clickable(onClick = {
+                    onPrevButtonClicked()
+                })
                 withStyle(style = SpanStyle(
                     color = Color.Blue ,
                     textDecoration = TextDecoration.Underline
