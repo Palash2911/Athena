@@ -51,7 +51,7 @@ fun PromtScreen(
 //                        shape = RoundedCornerShape(12),
 //                    ),
                 value = text,
-                placeholder = { Text("Enter Email",style = TextStyle(color = Color.Gray)) },
+                placeholder = { Text("Enter your Prompt here",style = TextStyle(color = Color.Gray)) },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color(0xFFFF772A), unfocusedBorderColor = Color(0xFFFF772A)),
                 label = {

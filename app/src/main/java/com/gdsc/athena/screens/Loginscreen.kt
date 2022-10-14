@@ -1,5 +1,6 @@
 package com.gdsc.athena
 
+import android.text.style.StyleSpan
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -29,7 +30,9 @@ import androidx.compose.ui.input.key.Key.Companion.G
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,6 +40,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -189,10 +193,19 @@ fun LoginScreen(
         Spacer(modifier = Modifier.size(20.dp))
         Text(
             modifier = Modifier.fillMaxWidth(0.7f).clickable(onClick = {
-                // to create new account page
+
             }),
-            text = "Or sign-up by creating a new account",
-            style = TextStyle(color = Color.Blue, textAlign = TextAlign.Center,textDecoration = TextDecoration.Underline),
+            text = buildAnnotatedString {
+                append("Don't have an account ? ")
+                withStyle(style = SpanStyle(
+                        color = Color.Blue ,
+                    textDecoration = TextDecoration.Underline
+                )
+                ){
+                    append("sign up")
+                }
+            },
+            style = TextStyle(color = Color.Gray, textAlign = TextAlign.Center),
         )
     }
 }
@@ -218,5 +231,5 @@ fun LoginScreen(
 //@Composable
 //@Preview(showBackground = true)
 //fun homescreenpre(){
-//    HomeScreen(null)
+//    LoginScreen(onNextButtonClicked = {})
 //}
