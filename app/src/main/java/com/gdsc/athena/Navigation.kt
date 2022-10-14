@@ -95,6 +95,9 @@ fun LoginScreens(
             val context = LocalContext.current
             ProfileScreen(
                 onNextButtonClicked = { navController.navigate(TitleSc.SelectionSc.name) },
+                     onPrevButtonClicked = {
+                navController.navigate(TitleSc.Start.name)
+            }
             )
         }
         composable(route = TitleSc.CreateS.name) {

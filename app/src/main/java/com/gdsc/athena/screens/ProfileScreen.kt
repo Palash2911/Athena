@@ -37,7 +37,7 @@ import com.google.firebase.ktx.Firebase
 
 
 @Composable
-fun ProfileScreen(onNextButtonClicked:()->Unit){
+fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
     val auth = FirebaseAuth.getInstance()
     val db = Firebase.firestore
     var name by remember { mutableStateOf("")}
@@ -70,11 +70,10 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
                     Log.d("FAILED!", it.toString())
                 }
         Log.d("asdf", name+email)
-        Icon(Icons.Filled.ExitToApp, "Logout",Modifier.size(65.dp).align(Start).padding(all =15.dp).clickable(onClick = {
-
-            //
-
-
+        Icon(Icons.Filled.ExitToApp, "Logout",
+                Modifier.size(65.dp).align(Start).padding(all =15.dp).clickable(onClick = {
+                    auth.signOut()
+                    onPrevButtonClicked()
         }),
             Color.Red
         )
