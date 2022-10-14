@@ -1,5 +1,6 @@
 package com.gdsc.athena.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -22,11 +23,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import getResponse
+import io.ktor.util.date.*
 
 @Composable
 fun PromtScreen(
     onNextButtonClicked: () -> Unit,
 ) {
+    val auth = FirebaseAuth.getInstance()
+    val db = Firebase.firestore
     var text by remember {
         mutableStateOf("")
     }
@@ -63,7 +71,18 @@ fun PromtScreen(
         }
         Spacer(modifier = Modifier.size(30.dp))
         Button(onClick = {
-           onNextButtonClicked()
+            var cat = ""
+            db.collection("Users").document(auth.currentUser?.uid.toString())
+                    .get().addOnSuccessListener {
+                        cat = it["Category"].toString()
+                    }
+            db.collection("Users").document(auth.currentUser?.uid.toString())
+                    .update("Prompt", text).addOnSuccessListener {
+                        getResponse(cat, text)
+                        onNextButtonClicked()
+                    }.addOnFailureListener {
+                        Log.d("Prompt", it.toString())
+                    }
         },shape = RoundedCornerShape(16), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)), modifier = Modifier
             .fillMaxWidth(0.8f)
             .fillMaxHeight(0.18f)) {

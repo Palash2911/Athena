@@ -2,6 +2,7 @@ package com.gdsc.athena
 
 import android.R.attr.contentDescription
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,12 +24,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 @Composable
 fun SelectionScreen(
     onNextButtonClicked: () -> Unit,
 ){
+    val auth = FirebaseAuth.getInstance()
+    val db = Firebase.firestore
     val context = LocalContext.current
     Column(modifier = Modifier.fillMaxHeight()) {
         Row(Modifier.fillMaxWidth().height(100.dp).background(Color(0xFF1D1D1D)), verticalAlignment = Alignment.CenterVertically) {
@@ -63,47 +69,45 @@ fun SelectionScreen(
         ) {
 //            val intent= Intent(context, PromtScreen::)
             item {
-                Modifier.clickable(onClick = {print("clicked")})
                 CustomButton(
                     name = "Sci-Fi",
                     painter = painterResource(id = R.drawable.sci_fi__2_b),
-
+                        { onNextButtonClicked() }
                 )
             }
             item {
-                Modifier.clickable(onClick = {
-                    onNextButtonClicked() })
                 CustomButton(
                     name = "Action",
-                    painter = painterResource(id = R.drawable.actionbb)
+                    painter = painterResource(id = R.drawable.actionbb),
+                        { onNextButtonClicked() }
                 )
             }
             item {
-                Modifier.clickable(onClick = {onNextButtonClicked()})
                 CustomButton(
                     name = "Romantic",
-                    painter = painterResource(id = R.drawable.romanticsb)
+                    painter = painterResource(id = R.drawable.romanticsb),
+                        { onNextButtonClicked() }
                 )
             }
             item {
-                Modifier.clickable(onClick = {onNextButtonClicked()})
                 CustomButton(
                     name = "Comedy",
-                    painter = painterResource(id = R.drawable.comedyb)
+                    painter = painterResource(id = R.drawable.comedyb),
+                        { onNextButtonClicked() }
                 )
             }
             item {
-                Modifier.clickable(onClick = {onNextButtonClicked()})
                 CustomButton(
                     name = "Mystery",
-                    painter = painterResource(id = R.drawable.myterib)
+                    painter = painterResource(id = R.drawable.myterib),
+                        { onNextButtonClicked() }
                 )
             }
             item {
-                Modifier.clickable(onClick = { onNextButtonClicked() })
                 CustomButton(
                     name = "Horror",
-                    painter = painterResource(id = R.drawable.horrorb)
+                    painter = painterResource(id = R.drawable.horrorb),
+                        { onNextButtonClicked() }
                 )
             }
         }
@@ -111,10 +115,21 @@ fun SelectionScreen(
 }
 
 @Composable
-fun CustomButton(name: String, painter: Painter, modifier: Modifier = Modifier){
+fun CustomButton(name: String, painter: Painter, onNextButtonClicked: () -> Unit, modifier: Modifier = Modifier){
+    val auth = FirebaseAuth.getInstance()
+    val db = Firebase.firestore
     Card(
         modifier
             .padding(12.dp)
+                .clickable(onClick = {
+                    db.collection("Users").document(auth.currentUser?.uid.toString())
+                            .update("Category", name).addOnSuccessListener {
+                                Log.d("Success","asdf")
+                                onNextButtonClicked()
+                            }.addOnFailureListener {
+                                Log.d("Selection1", it.toString())
+                            }
+                })
             .fillMaxWidth(0.9f)
             .background(color = Color(0xFF1D1D1D))
             .border(width = 3.dp, color = Color(0xFF1D1D1D), shape = RoundedCornerShape(22.dp))

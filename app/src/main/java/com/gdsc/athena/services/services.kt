@@ -3,8 +3,9 @@ import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
 import kotlinx.coroutines.*
 
-val apiKey = "API_KEY_HERE"
+val apiKey = "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"
 val openAI = OpenAI(apiKey)
+var story = ""
 
 suspend fun generateResponse(user_prompt: String, category: String): String{
     val request = CompletionRequest(
@@ -19,12 +20,10 @@ suspend fun generateResponse(user_prompt: String, category: String): String{
     return openAI.completion(request).choices[0].text
 }
 
-fun getResponse(user_prompt: String, category: String) :String{
-    var story = ""
+fun getResponse(user_prompt: String, category: String){
     runBlocking {
         launch {
             story = generateResponse(user_prompt, category)
         }
     }
-    return story
 }
