@@ -113,19 +113,21 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
             .padding(top = 5.dp),
             contentAlignment = Alignment.CenterStart
         ) {
-            Column(Modifier.fillMaxWidth()) {
-                Button(onClick = { onNextButtonClicked() },
-                    Modifier
-                        .padding(horizontal = 30.dp, vertical = 12.dp)
-                        .fillMaxWidth()
-                        .height(50.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)), shape = RoundedCornerShape(13. dp)) {
-                    Text(
-                        text = "Create New Story",
-                        style = TextStyle(
-                            fontSize = 20.sp,
-                            color = Color.White,
-                        ),
-                    )
+            Column() {
+                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Button(onClick = { onNextButtonClicked() },
+                        Modifier
+                            .padding(horizontal = 30.dp, vertical = 12.dp)
+                            .width(200.dp)
+                            .height(50.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)), shape = RoundedCornerShape(13. dp)) {
+                        Text(
+                            text = "Create New Story",
+                            style = TextStyle(
+                                fontSize = 20.sp,
+                                color = Color.White,
+                            ),
+                        )
+                    }
                 }
                 Text(
                     text = "Saved prompts",
@@ -133,7 +135,7 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
                         fontSize = 30.sp,
                         color = Color.LightGray
                     ),
-                    modifier = Modifier.padding(start = 40.dp),
+                    modifier = Modifier.padding(start = 20.dp, top = 10.dp),
                     textAlign = TextAlign.Start
                 )
             }
@@ -146,11 +148,22 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
             horizontalAlignment = CenterHorizontally
         ) {
             items(Cat.size ){
-                CustomPrompt(
-                    type = Cat[it],
-                    prompt = Pro[it],
-                    story = Stor[it],
-                )
+                if(Cat.size==1)
+                {
+                    Text(text = "No Story Saved Yet !!",
+                    modifier = Modifier.padding(65.dp),
+                    style = TextStyle(color = Color.White,
+                    fontSize = 23.sp)
+                    )
+                }
+                else
+                {
+                    CustomPrompt(
+                        type = Cat[it],
+                        prompt = Pro[it],
+                        story = Stor[it],
+                    )
+                }
             }
         }
     }
