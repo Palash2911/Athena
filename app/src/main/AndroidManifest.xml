@@ -11,6 +11,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 >>>>>>> e0bac1e394825a0c4d14697cd3af2a752b1448cb
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"

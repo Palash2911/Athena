@@ -1,8 +1,10 @@
 package com.gdsc.athena
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -10,9 +12,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -20,18 +25,58 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+
+
 @Composable
-fun ProfileScreen(onNextButtonClicked:()->Unit){
+fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
+    val auth = FirebaseAuth.getInstance()
+    val db = Firebase.firestore
+    var name by remember { mutableStateOf("")}
+    var email by remember {mutableStateOf("")}
+    val Cat = mutableListOf<String>("")
+    val Pro by remember { mutableStateOf(mutableListOf(""))}
+    val Stor by remember { mutableStateOf(mutableListOf(""))}
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .background(color = Color(0xFF1D1D1D)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        db.collection("Users").document(auth.currentUser?.uid.toString())
+                .collection("Saved").get()
+                .addOnSuccessListener {
+                    for(ss in it){
+                        Cat.add(ss.get("Category").toString())
+                        Pro.add(ss.get("Prompt").toString())
+                        Stor.add(ss.get("Story").toString())
+                    }
+                }
+        Log.d("Carte", Cat.toString())
+        db.collection("Users").document(auth.currentUser?.uid.toString())
+                .get().addOnSuccessListener {
+                    name = it["FName"].toString() + " " + it["LName"].toString()
+                    email = it["Email"].toString()
+                }.addOnFailureListener {
+                    Log.d("FAILED!", it.toString())
+                }
+        Log.d("asdf", name+email)
+        Icon(Icons.Filled.ExitToApp, "Logout",
+                Modifier.size(65.dp).align(Start).padding(all =15.dp).clickable(onClick = {
+                    auth.signOut()
+                    onPrevButtonClicked()
+        }),
+            Color.Red
+        )
         Spacer(modifier = Modifier.size(60.dp))
         Surface(
             shape = CircleShape,
@@ -57,13 +102,14 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
             )
         }
         Spacer(modifier = Modifier.size(20.dp))
-        Text(text = "Joe Mama" ,style = TextStyle(fontSize = 30.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
+        Text(text = name ,style = TextStyle(fontSize = 30.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
             .wrapContentSize(Alignment.Center), textAlign = TextAlign.Center,)
         Spacer(modifier = Modifier.size(4.dp))
-        Text(text = "deez@gmail.com" , style = TextStyle(fontSize = 20.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth(0.7f))
+        Row(Modifier.fillMaxWidth().height(35.dp), verticalAlignment = Alignment.CenterVertically) { Text(text = "deez@gmail.com" , style = TextStyle(fontSize = 20.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth()) }
+
         Box(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp),
+            .padding(top = 5.dp),
             contentAlignment = Alignment.CenterStart
         ) {
             Row(Modifier.fillMaxWidth()) {
@@ -76,12 +122,16 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
                     modifier = Modifier.padding(start = 25.dp),
                     textAlign = TextAlign.Start
                 )
-                Button(onClick = { onNextButtonClicked() }, Modifier.padding(all = 12.dp).height(30.dp)) {
+                Button(onClick = { onNextButtonClicked() },
+                    Modifier
+                        .padding(all = 12.dp)
+                        .height(35.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)),) {
                     Text(
-                        text = "Create more stories",
+                        text = "Create",
                         style = TextStyle(
+                            textAlign = TextAlign.Center,
                             fontSize = 12.sp,
-                            color = Color.LightGray
+                            color = Color.White
                         ),
                     )
                 }
@@ -96,7 +146,7 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
         ) {
             item {
                 CustomPrompt(
-                    type = "Sci-Fi",
+                    type = Cat[0],
                     prompt = "Mama mia its mario ",
                     story = "I'm so angry with you right now! I can't believe you would agree to play Mario in the upcoming movie. Mario is one of my all-time favorite video game characters and you are just ruining him!\n" +
                             "\n" +
@@ -121,7 +171,6 @@ fun ProfileScreen(onNextButtonClicked:()->Unit){
         }
     }
 }
-
 @Composable
 fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modifier = Modifier, ){
     Card(
@@ -129,8 +178,8 @@ fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modif
             .padding(12.dp)
             .fillMaxWidth(0.9f)
             .height(180.dp)
-            .background(color = Color.Gray)
-            .border(width = 3.dp, color = Color.Gray, shape = RoundedCornerShape(22.dp))
+            .background(color = Color.Transparent)
+            .border(width = 3.dp, color = Color(0XFFFF772A), shape = RoundedCornerShape(22.dp))
             .clip(shape = RoundedCornerShape(16.dp)),
 
         shape = RoundedCornerShape(22.dp)
@@ -138,11 +187,14 @@ fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modif
         Column(modifier = Modifier.background(color=Color(0xFF1A1A1A))) {
             Text(text = type ,style = TextStyle(fontSize = 28.sp, color = Color(0xFFFFFFFF )), modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 2.dp), textAlign = TextAlign.Center,)
-            Text(text = prompt , style = TextStyle(fontSize = 18.sp ,color = Color.White , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth(), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                .padding(horizontal = 2.dp, vertical = 3.dp), textAlign = TextAlign.Center,)
+            Text(text = prompt , style = TextStyle(fontSize = 18.sp ,color = Color.White , textAlign = TextAlign.Center) , modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 9.dp), maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(text = story , style = TextStyle(fontSize = 14.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 5.dp), maxLines = 5 , overflow = TextOverflow.Ellipsis)
+                .padding(horizontal = 9.dp), maxLines = 3, overflow = TextOverflow.Ellipsis)
+            Spacer(Modifier.height(5.dp))
         }
     }
 }

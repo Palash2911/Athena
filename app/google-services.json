@@ -7,17 +7,30 @@
   "client": [
     {
       "client_info": {
+<<<<<<< HEAD
         "mobilesdk_app_id": "1:528294368212:android:4681774b263868ac8f7c41",
         "android_client_info": {
           "package_name": "com.godspeed.athena"
+=======
+        "mobilesdk_app_id": "1:528294368212:android:8e061cfdef93b6048f7c41",
+        "android_client_info": {
+          "package_name": "com.gdsc.athena"
+>>>>>>> Palash_dev
         }
       },
       "oauth_client": [
         {
+<<<<<<< HEAD
           "client_id": "528294368212-2g92s7kvq2f3enmj37gi7a250jch2rki.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.godspeed.athena",
+=======
+          "client_id": "528294368212-ujkdg7qi2cc1r4flgn10thi6sboh12ua.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gdsc.athena",
+>>>>>>> Palash_dev
             "certificate_hash": "76b170dd274f35aa15c985d263c2bed3330a15a3"
           }
         },
