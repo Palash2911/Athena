@@ -44,9 +44,9 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
     val db = Firebase.firestore
     var name by remember { mutableStateOf("")}
     var email by remember {mutableStateOf("")}
-    val Cat = remember { mutableStateListOf("") }
-    val Pro = remember { mutableStateListOf("") }
-    val Stor by remember { mutableStateOf(mutableListOf(""))}
+    val Cat = mutableListOf<String>()
+    val Pro = mutableListOf<String>()
+    val Stor = mutableListOf<String>()
     getCat(Cat)
     getPrompt(Pro)
     getStory(Stor)
@@ -78,7 +78,7 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
         Surface(
             shape = CircleShape,
             modifier = Modifier
-                .size(150.dp)
+                .size(100.dp)
                 .background(Color.Transparent),
         ) {
             Image(
