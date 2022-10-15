@@ -49,7 +49,8 @@ fun SelectionScreen(
                 Text(
                     text = "Categories",
                     style = TextStyle(fontSize = 50.sp, color = Color(0xFFFFFFFF)),
-                    modifier = Modifier.padding(start = 54.dp, bottom = 15.dp),
+                    modifier = Modifier.padding(start = 30.dp, bottom = 15.dp),
+                    textAlign = TextAlign.Start
                 )
             }
         }

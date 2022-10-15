@@ -45,9 +45,11 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
     var name by remember { mutableStateOf("")}
     var email by remember {mutableStateOf("")}
     val Cat = remember { mutableStateListOf("") }
-    val Pro = remember { mutableStateListOf("Action") }
+    val Pro = remember { mutableStateListOf("") }
     val Stor by remember { mutableStateOf(mutableListOf(""))}
-    getlist(Cat)
+    getCat(Cat)
+    getPrompt(Pro)
+    getStory(Stor)
     Log.d("Carte", Cat.toString())
     Column(
         modifier = Modifier
@@ -63,10 +65,14 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
                     Log.d("FAILED!", it.toString())
                 }
         Icon(Icons.Filled.ExitToApp, "Logout",
-                Modifier.size(65.dp).align(Start).padding(all = 15.dp).clickable(onClick = {
+            Modifier
+                .size(65.dp)
+                .align(Start)
+                .padding(all = 15.dp)
+                .clickable(onClick = {
                     auth.signOut()
                     onPrevButtonClicked()
-        }),
+                }),
             Color.Gray
         )
         Surface(
@@ -96,7 +102,10 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
         Text(text = name ,style = TextStyle(fontSize = 30.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
             .wrapContentSize(Alignment.Center), textAlign = TextAlign.Center,)
         Spacer(modifier = Modifier.size(4.dp))
-        Row(Modifier.fillMaxWidth().height(35.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .height(35.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(text = email , style = TextStyle(fontSize = 20.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth()) }
 
         Box(modifier = Modifier
@@ -104,7 +113,20 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
             .padding(top = 5.dp),
             contentAlignment = Alignment.CenterStart
         ) {
-            Row(Modifier.fillMaxWidth()) {
+            Column(Modifier.fillMaxWidth()) {
+                Button(onClick = { onNextButtonClicked() },
+                    Modifier
+                        .padding(horizontal = 40.dp, vertical = 12.dp)
+                        .fillMaxWidth()
+                        .height(100.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)),) {
+                    Text(
+                        text = "Create New Story",
+                        style = TextStyle(
+                            fontSize = 20.sp,
+                            color = Color.Black
+                        ),
+                    )
+                }
                 Text(
                     text = "Saved prompts",
                     style = TextStyle(
@@ -114,12 +136,6 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
                     modifier = Modifier.padding(start = 40.dp),
                     textAlign = TextAlign.Start
                 )
-                Button(onClick = { onNextButtonClicked() },
-                    Modifier
-                        .padding(all = 9.dp)
-                        .height(30.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)),) {
-                    Icon(Icons.Filled.Add, "Add Story",  modifier = Modifier.size(ButtonDefaults.IconSize))
-                }
             }
         }
         LazyColumn(
@@ -132,12 +148,9 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
             items(Cat.size){
                 CustomPrompt(
                     type = Cat[it],
-                    prompt = "Mama mia its mario ",
-                    story = "I'm so angry with you right now! I can't believe you would agree to play Mario in the upcoming movie. Mario is one of my all-time favorite video game characters and you are just ruining him!\n" +
-                            "\n" +
-                            "You are nothing like Mario. You are not Italian, you are not a plumber, and you are not short. In fact, you are the complete opposite of Mario! You are tall, white, and an actor. You have no business playing Mario in the movie.\n" +
-                            "\n" +
-                            "I don't care if you are the star of the movie. I will not be watching it. I will not support it. I am so mad at you right now. You have ruined my childhood hero and I will never forgive you for it." )
+                    prompt = Pro[it],
+                    story = Stor[it],
+                )
             }
         }
     }
@@ -151,7 +164,7 @@ fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modif
             .height(180.dp)
             .background(color = Color.Transparent)
             .border(width = 3.dp, color = Color(0XFFFF772A), shape = RoundedCornerShape(22.dp))
-            .clip(shape = RoundedCornerShape(16.dp)),
+            .clip(shape = RoundedCornerShape(10.dp)),
 
         shape = RoundedCornerShape(22.dp)
     ) {
@@ -171,20 +184,44 @@ fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modif
 }
 
 @Composable
-fun getlist(Cateo: MutableList<String>): MutableList<String> {
+fun getCat(Cateo: MutableList<String>): MutableList<String> {
     val auth = FirebaseAuth.getInstance()
     val db = Firebase.firestore
-    val Pro = mutableListOf<String>()
-    val Stor = mutableListOf<String>()
     db.collection("Users").document(auth.currentUser?.uid.toString())
         .collection("Saved").get()
         .addOnSuccessListener {
             for(ss in it){
                 Cateo.add(ss.get("Category").toString())
-                Pro.add(ss.get("Prompt").toString())
-                Stor.add(ss.get("Story").toString())
             }
         }
     Log.d("Carte22", Cateo.toString())
     return Cateo
+}
+
+fun getPrompt(Pro: MutableList<String>): MutableList<String> {
+    val auth = FirebaseAuth.getInstance()
+    val db = Firebase.firestore
+    db.collection("Users").document(auth.currentUser?.uid.toString())
+        .collection("Saved").get()
+        .addOnSuccessListener {
+            for(ss in it){
+                Pro.add(ss.get("Prompt").toString())
+            }
+        }
+    Log.d("Carte22", Pro.toString())
+    return Pro
+}
+
+fun getStory(Stor: MutableList<String>): MutableList<String> {
+    val auth = FirebaseAuth.getInstance()
+    val db = Firebase.firestore
+    db.collection("Users").document(auth.currentUser?.uid.toString())
+        .collection("Saved").get()
+        .addOnSuccessListener {
+            for(ss in it){
+                Stor.add(ss.get("Story").toString())
+            }
+        }
+    Log.d("Carte22", Stor.toString())
+    return Stor
 }

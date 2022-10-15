@@ -62,11 +62,11 @@ fun PromtScreen(
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() }),
                 maxLines = 5,
-                shape = RoundedCornerShape(12),
+                shape = RoundedCornerShape(6),
                 modifier = Modifier
                     .padding(top = 100.dp)
                     .fillMaxWidth(0.8f)
-                    .fillMaxHeight(0.40f),
+                    .fillMaxHeight(0.50f),
 //                    .border(
 //                        color = Color(0xFFFF772A),
 //                        width = 4.dp,

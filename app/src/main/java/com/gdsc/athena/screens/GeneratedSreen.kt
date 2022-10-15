@@ -35,7 +35,7 @@ import story
 
 @Composable
 fun genretedtScreen(
-//    userspronmt : String,
+//    usersprompt : String,
     onNextButtonClicked: () -> Unit,
 ) {
     var text by remember { mutableStateOf(story) }
@@ -100,14 +100,14 @@ fun genretedtScreen(
                 Modifier
                     .fillMaxSize()
                     .padding(top = 10.dp, bottom = 60.dp, start = 30.dp, end = 30.dp),
-                shape = RoundedCornerShape(35.dp),
+                shape = RoundedCornerShape(16.dp),
                 border = BorderStroke(4.dp, color = Color(0xFFEF5B0C))
             ) {
                 TextField(
 //                    modifier = Modifier.padding(start = 4.dp, top = 10.dp, bottom = 18.dp),
                     label = {
                         Text(
-                            text = "User's Entered Prompt",
+                            text = "Generated Story",
                             style = TextStyle(color = Color.White, fontSize = 22.sp),
                             textAlign = TextAlign.Center,
                             modifier = Modifier.padding(all = 16.dp)
