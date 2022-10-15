@@ -2,6 +2,7 @@ package com.gdsc.athena
 
 import android.text.style.StyleSpan
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key.Companion.G
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.*
@@ -66,6 +68,7 @@ fun LoginScreen(
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
+    val lct = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -167,7 +170,7 @@ fun LoginScreen(
                 ).addOnSuccessListener {
                     onNextButtonClicked()
                 }.addOnFailureListener {
-                    Log.d("FAILED!", it.toString())
+                    Toast.makeText(lct, "Incorrect Credentials", Toast.LENGTH_SHORT).show()
                 }
             },
             shape = RoundedCornerShape(24),
