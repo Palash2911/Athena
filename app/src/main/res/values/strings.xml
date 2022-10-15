@@ -1,11 +1,3 @@
 <resources>
-<<<<<<< HEAD
-<<<<<<< HEAD
     <string name="app_name">Athena</string>
-=======
-    <string name="app_name">athena</string>
->>>>>>> 3529326431ebef89ebf7f7624f2f359247c78d89
-=======
-    <string name="app_name">athena</string>
->>>>>>> e0bac1e394825a0c4d14697cd3af2a752b1448cb
 </resources>

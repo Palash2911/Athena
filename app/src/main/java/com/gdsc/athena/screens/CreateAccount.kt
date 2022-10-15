@@ -8,15 +8,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -34,11 +37,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+import java.util.*
+
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun createAccount( onNextButtonClicked: () -> Unit,
                    onPrevButtonClicked: ()-> Unit,
                    modifier: Modifier = Modifier
 ){
+    val keyboardController = LocalSoftwareKeyboardController.current
     val auth = FirebaseAuth.getInstance()
     val db = Firebase.firestore
     val profile: HashMap<String, Any> = HashMap()
@@ -121,6 +128,8 @@ fun createAccount( onNextButtonClicked: () -> Unit,
         Spacer(modifier = Modifier.size(20.dp))
         OutlinedTextField(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = { keyboardController?.hide() }),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0xFFFF772A), unfocusedBorderColor = Color(0xFFFF772A)
             ),
@@ -139,7 +148,7 @@ fun createAccount( onNextButtonClicked: () -> Unit,
                 password = it
             }
         )
-        Spacer(modifier = Modifier.size(60.dp))
+        Spacer(modifier = Modifier.size(30.dp))
         Button(
             onClick = {
                 auth.createUserWithEmailAndPassword(
@@ -170,27 +179,28 @@ fun createAccount( onNextButtonClicked: () -> Unit,
             Text(
                 text = "Create account", style = TextStyle(fontSize = 20.sp, color = Color(0xFFFCFBF7)),
                 modifier = Modifier
-                    .fillMaxWidth().fillMaxWidth(),
+                    .fillMaxWidth()
+                    .fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
         }
         Spacer(modifier = Modifier.size(20.dp))
-        Text(
-            modifier = Modifier.fillMaxWidth(0.7f),
-            text = buildAnnotatedString {
-                append("already have an account ? ,")
-                Modifier.clickable(onClick = {
+        Row() {
+            Text(text = "Already have an Account ? ",  style = TextStyle(
+                color = Color.White, textAlign = TextAlign.Center, fontSize = 16.sp))
+            Text(
+                modifier = Modifier.clickable(onClick = {
                     onPrevButtonClicked()
-                })
-                withStyle(style = SpanStyle(
-                    color = Color.Blue ,
-                    textDecoration = TextDecoration.Underline
-                )
-                ){
-                    append("log in ")
-                }
-            },
-            style = TextStyle(color = Color.Gray, textAlign = TextAlign.Center),
-        )
+                }),
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(
+                        color = Color(0xFFe85d04)
+                    )
+                    ){
+                        append("Log In")
+                    }
+                },
+            )
+        }
     }
 }

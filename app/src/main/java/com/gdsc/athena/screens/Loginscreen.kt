@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -29,10 +30,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key.Companion.G
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -40,7 +40,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,12 +52,14 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(
     onNextButtonClicked: () -> Unit,
     onPrevButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     val auth = FirebaseAuth.getInstance()
     val emailVal = remember { mutableStateOf(TextFieldValue()) }
     val passwdVal = remember { mutableStateOf(TextFieldValue()) }
@@ -136,7 +137,9 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.size(10.dp))
         OutlinedTextField(
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = { keyboardController?.hide() }),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0xFFFF772A), unfocusedBorderColor = Color(0xFFFF772A)),
             label = {
@@ -182,22 +185,23 @@ fun LoginScreen(
             )
         }
         Spacer(modifier = Modifier.size(20.dp))
-        Text(
-            modifier = Modifier.fillMaxWidth(0.7f).clickable(onClick = {
-                onPrevButtonClicked()
-            }),
-            text = buildAnnotatedString {
-                append("Don't have an account ? ")
-                withStyle(style = SpanStyle(
-                        color = Color.Blue ,
-                    textDecoration = TextDecoration.Underline
-                )
-                ){
-                    append("sign up")
-                }
-            },
-            style = TextStyle(color = Color.Gray, textAlign = TextAlign.Center),
-        )
+        Row() {
+            Text(text = "Don't have an Account ? ",  style = TextStyle(
+                color = Color.White, textAlign = TextAlign.Center, fontSize = 16.sp))
+            Text(
+                modifier = Modifier.clickable(onClick = {
+                    onPrevButtonClicked()
+                }),
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(
+                        color = Color(0xFFe85d04)
+                    )
+                    ){
+                        append("Sign Up")
+                    }
+                },
+            )
+        }
     }
 }
 
