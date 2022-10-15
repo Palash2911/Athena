@@ -1,6 +1,7 @@
 package com.gdsc.athena.screens
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -48,6 +50,7 @@ fun createAccount( onNextButtonClicked: () -> Unit,
     val keyboardController = LocalSoftwareKeyboardController.current
     val auth = FirebaseAuth.getInstance()
     val db = Firebase.firestore
+    val lct = LocalContext.current
     val profile: HashMap<String, Any> = HashMap()
     var firstname by remember { mutableStateOf(TextFieldValue("")) }
     var lastname by remember { mutableStateOf(TextFieldValue("")) }
@@ -151,22 +154,30 @@ fun createAccount( onNextButtonClicked: () -> Unit,
         Spacer(modifier = Modifier.size(30.dp))
         Button(
             onClick = {
-                auth.createUserWithEmailAndPassword(
+                if(email.text.isEmpty() || password.text.isEmpty() || firstname.text.isEmpty() || lastname.text.isEmpty())
+                {
+                    Toast.makeText(lct, "Please Fill All Details", Toast.LENGTH_SHORT).show()
+                }
+                else
+                {
+                    auth.createUserWithEmailAndPassword(
                         email.text,
                         password.text
-                ).addOnSuccessListener {
-                    profile["FName"] = firstname.text
-                    profile["LName"] = lastname.text
-                    profile["UID"] = auth.currentUser?.uid.toString()
-                    profile["Email"] = email.text
-                    db.collection("Users").document(auth.currentUser?.uid.toString())
+                    ).addOnSuccessListener {
+                        profile["FName"] = firstname.text
+                        profile["LName"] = lastname.text
+                        profile["UID"] = auth.currentUser?.uid.toString()
+                        profile["Email"] = email.text
+                        db.collection("Users").document(auth.currentUser?.uid.toString())
                             .set(profile).addOnSuccessListener {
                                 onNextButtonClicked()
                             }.addOnFailureListener {
                                 Log.d("Add db", it.toString())
                             }
-                }.addOnFailureListener {
-                    Log.d("Email Create", it.toString())
+                    }.addOnFailureListener {
+                        Log.d("Email Create", it.toString())
+                        Toast.makeText(lct, "Email already exists !!", Toast.LENGTH_SHORT).show()
+                    }
                 }
             },
             shape = RoundedCornerShape(24),

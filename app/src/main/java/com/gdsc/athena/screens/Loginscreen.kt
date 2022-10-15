@@ -169,14 +169,21 @@ fun LoginScreen(
         Spacer(modifier = Modifier.size(20.dp))
         Button(
             onClick = {
-//            navController.navigate(TitleSc.PromtS.name)
-                auth.signInWithEmailAndPassword(
-                    emailVal.value.text,
-                    passwdVal.value.text
-                ).addOnSuccessListener {
-                    onNextButtonClicked()
-                }.addOnFailureListener {
+                if(emailVal.value.text.isEmpty() || passwdVal.value.text.isEmpty())
+                {
                     Toast.makeText(lct, "Incorrect Credentials", Toast.LENGTH_SHORT).show()
+                }
+                else
+                {
+                    // navController.navigate(TitleSc.PromtS.name)
+                    auth.signInWithEmailAndPassword(
+                        emailVal.value.text,
+                        passwdVal.value.text
+                    ).addOnSuccessListener {
+                        onNextButtonClicked()
+                    }.addOnFailureListener {
+                        Toast.makeText(lct, "Incorrect Credentials", Toast.LENGTH_SHORT).show()
+                    }
                 }
             },
             shape = RoundedCornerShape(24),

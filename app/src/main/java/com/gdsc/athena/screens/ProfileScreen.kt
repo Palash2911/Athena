@@ -116,14 +116,14 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
             Column(Modifier.fillMaxWidth()) {
                 Button(onClick = { onNextButtonClicked() },
                     Modifier
-                        .padding(horizontal = 40.dp, vertical = 12.dp)
+                        .padding(horizontal = 30.dp, vertical = 12.dp)
                         .fillMaxWidth()
-                        .height(100.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)),) {
+                        .height(50.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)), shape = RoundedCornerShape(13. dp)) {
                     Text(
                         text = "Create New Story",
                         style = TextStyle(
                             fontSize = 20.sp,
-                            color = Color.Black
+                            color = Color.White,
                         ),
                     )
                 }
