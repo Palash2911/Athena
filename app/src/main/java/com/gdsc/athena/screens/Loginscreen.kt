@@ -123,7 +123,10 @@ fun LoginScreen(
                 imeAction = ImeAction.Next
             ),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF772A), unfocusedBorderColor = Color(0xFFFF772A)),
+                focusedBorderColor = Color(0xFFFF772A),
+                unfocusedBorderColor = Color(0xFFFF772A),
+                textColor = Color.Gray
+            ),
             label = {
                 Text(
                     text = "Email",
@@ -144,7 +147,10 @@ fun LoginScreen(
             keyboardActions = KeyboardActions(
                 onDone = { keyboardController?.hide() }),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF772A), unfocusedBorderColor = Color(0xFFFF772A)),
+                focusedBorderColor = Color(0xFFFF772A),
+                unfocusedBorderColor = Color(0xFFFF772A),
+                textColor = Color.Gray
+            ),
             label = {
                 Text(
                     text = "Password",
