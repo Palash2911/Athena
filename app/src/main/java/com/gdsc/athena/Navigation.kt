@@ -62,7 +62,7 @@ fun LoginScreens(
     )
     NavHost(
         navController = navController,
-        startDestination = if(auth.currentUser!=null){TitleSc.ProfileS.name}else{TitleSc.Start.name},
+        startDestination = if(auth.currentUser!=null){TitleSc.PromtS.name}else{TitleSc.Start.name},
     ) {
         composable(route = TitleSc.Start.name) {
             LoginScreen(

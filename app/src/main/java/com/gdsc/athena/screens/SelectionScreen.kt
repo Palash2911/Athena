@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
@@ -48,15 +49,7 @@ fun SelectionScreen(
                 Text(
                     text = "Categories",
                     style = TextStyle(fontSize = 50.sp, color = Color(0xFFFFFFFF)),
-                    modifier = Modifier.padding(start = 34.dp, bottom = 15.dp)
-                )
-            }
-            Button(onClick = {onNextButtonClicked()},Modifier.padding(all =12.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A))) {
-//                Icon(Icons.Filled.ArrowForward)
-                Icon(
-                    Icons.Filled.ArrowForward,
-                    contentDescription = "Favorite",
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
+                    modifier = Modifier.padding(start = 54.dp, bottom = 15.dp),
                 )
             }
         }

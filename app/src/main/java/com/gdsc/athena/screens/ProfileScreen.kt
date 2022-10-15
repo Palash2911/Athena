@@ -11,11 +11,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.*
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
@@ -69,15 +71,13 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
                 }.addOnFailureListener {
                     Log.d("FAILED!", it.toString())
                 }
-        Log.d("asdf", name+email)
         Icon(Icons.Filled.ExitToApp, "Logout",
-                Modifier.size(65.dp).align(Start).padding(all =15.dp).clickable(onClick = {
+                Modifier.size(65.dp).align(Start).padding(all = 15.dp).clickable(onClick = {
                     auth.signOut()
                     onPrevButtonClicked()
         }),
-            Color.Red
+            Color.Gray
         )
-        Spacer(modifier = Modifier.size(60.dp))
         Surface(
             shape = CircleShape,
             modifier = Modifier
@@ -105,7 +105,8 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
         Text(text = name ,style = TextStyle(fontSize = 30.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
             .wrapContentSize(Alignment.Center), textAlign = TextAlign.Center,)
         Spacer(modifier = Modifier.size(4.dp))
-        Row(Modifier.fillMaxWidth().height(35.dp), verticalAlignment = Alignment.CenterVertically) { Text(text = "deez@gmail.com" , style = TextStyle(fontSize = 20.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth()) }
+        Row(Modifier.fillMaxWidth().height(35.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(text = email , style = TextStyle(fontSize = 20.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth()) }
 
         Box(modifier = Modifier
             .fillMaxWidth()
@@ -119,21 +120,14 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
                         fontSize = 30.sp,
                         color = Color.LightGray
                     ),
-                    modifier = Modifier.padding(start = 25.dp),
+                    modifier = Modifier.padding(start = 40.dp),
                     textAlign = TextAlign.Start
                 )
                 Button(onClick = { onNextButtonClicked() },
                     Modifier
-                        .padding(all = 12.dp)
-                        .height(35.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)),) {
-                    Text(
-                        text = "Create",
-                        style = TextStyle(
-                            textAlign = TextAlign.Center,
-                            fontSize = 12.sp,
-                            color = Color.White
-                        ),
-                    )
+                        .padding(all = 9.dp)
+                        .height(30.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)),) {
+                    Icon(Icons.Filled.Add, "Add Story",  modifier = Modifier.size(ButtonDefaults.IconSize))
                 }
             }
         }
