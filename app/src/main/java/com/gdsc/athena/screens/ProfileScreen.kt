@@ -145,7 +145,7 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
                 .background(color = Color(0xFF1D1D1D)),
             horizontalAlignment = CenterHorizontally
         ) {
-            items(Cat.size){
+            items(Cat.size ){
                 CustomPrompt(
                     type = Cat[it],
                     prompt = Pro[it],
@@ -183,7 +183,6 @@ fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modif
     }
 }
 
-@Composable
 fun getCat(Cateo: MutableList<String>): MutableList<String> {
     val auth = FirebaseAuth.getInstance()
     val db = Firebase.firestore
@@ -194,7 +193,6 @@ fun getCat(Cateo: MutableList<String>): MutableList<String> {
                 Cateo.add(ss.get("Category").toString())
             }
         }
-    Log.d("Carte22", Cateo.toString())
     return Cateo
 }
 
@@ -208,7 +206,6 @@ fun getPrompt(Pro: MutableList<String>): MutableList<String> {
                 Pro.add(ss.get("Prompt").toString())
             }
         }
-    Log.d("Carte22", Pro.toString())
     return Pro
 }
 
@@ -222,6 +219,5 @@ fun getStory(Stor: MutableList<String>): MutableList<String> {
                 Stor.add(ss.get("Story").toString())
             }
         }
-    Log.d("Carte22", Stor.toString())
     return Stor
 }
