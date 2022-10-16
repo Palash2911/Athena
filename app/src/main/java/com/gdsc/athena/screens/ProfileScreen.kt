@@ -11,13 +11,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.*
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
@@ -27,8 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -44,13 +39,15 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
     val db = Firebase.firestore
     var name by remember { mutableStateOf("")}
     var email by remember {mutableStateOf("")}
-    val Cat = mutableListOf<String>()
-    val Pro = mutableListOf<String>()
-    val Stor = mutableListOf<String>()
+
+    val Stor by remember {mutableStateOf(mutableListOf<String>())}
+    val Cat by remember {mutableStateOf(mutableListOf<String>())}
+    val Pro by remember {mutableStateOf(mutableListOf<String>())}
+
     getCat(Cat)
-    getPrompt(Pro)
     getStory(Stor)
-    Log.d("Carte", Cat.toString())
+    getPrompt(Pro)
+    val size = Cat.size
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -147,23 +144,12 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
                 .background(color = Color(0xFF1D1D1D)),
             horizontalAlignment = CenterHorizontally
         ) {
-            items(Cat.size ){
-                if(Cat.size==1)
-                {
-                    Text(text = "No Story Saved Yet !!",
-                    modifier = Modifier.padding(65.dp),
-                    style = TextStyle(color = Color.White,
-                    fontSize = 23.sp)
-                    )
-                }
-                else
-                {
-                    CustomPrompt(
-                        type = Cat[it],
-                        prompt = Pro[it],
-                        story = Stor[it],
-                    )
-                }
+            items(size){
+                CustomPrompt(
+                    type = Cat[it],
+                    prompt = Pro[it],
+                    story = Stor[it],
+                )
             }
         }
     }
@@ -196,41 +182,47 @@ fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modif
     }
 }
 
-fun getCat(Cateo: MutableList<String>): MutableList<String> {
-    val auth = FirebaseAuth.getInstance()
+fun getCat(Cat: MutableList<String>) : MutableList<String>{
     val db = Firebase.firestore
-    db.collection("Users").document(auth.currentUser?.uid.toString())
-        .collection("Saved").get()
-        .addOnSuccessListener {
-            for(ss in it){
-                Cateo.add(ss.get("Category").toString())
+    val auth = FirebaseAuth.getInstance()
+    db.collection("Users").document(auth.currentUser?.uid.toString()).collection("Saved").get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    Cat.add(document["Category"].toString())
+                }
             }
-        }
-    return Cateo
+            .addOnFailureListener { exception ->
+                Log.d("FAILED!", "Error getting documents: ", exception)
+            }
+    return Cat
 }
 
-fun getPrompt(Pro: MutableList<String>): MutableList<String> {
-    val auth = FirebaseAuth.getInstance()
+fun getStory(Stor: MutableList<String>) : MutableList<String>{
     val db = Firebase.firestore
-    db.collection("Users").document(auth.currentUser?.uid.toString())
-        .collection("Saved").get()
-        .addOnSuccessListener {
-            for(ss in it){
-                Pro.add(ss.get("Prompt").toString())
+    val auth = FirebaseAuth.getInstance()
+    db.collection("Users").document(auth.currentUser?.uid.toString()).collection("Saved").get()
+        .addOnSuccessListener { result ->
+            for (document in result) {
+                Stor.add(document["Story"].toString())
             }
         }
-    return Pro
-}
-
-fun getStory(Stor: MutableList<String>): MutableList<String> {
-    val auth = FirebaseAuth.getInstance()
-    val db = Firebase.firestore
-    db.collection("Users").document(auth.currentUser?.uid.toString())
-        .collection("Saved").get()
-        .addOnSuccessListener {
-            for(ss in it){
-                Stor.add(ss.get("Story").toString())
-            }
+        .addOnFailureListener { exception ->
+            Log.d("FAILED!", "Error getting documents: ", exception)
         }
     return Stor
+}
+
+fun getPrompt(Pro: MutableList<String>) : MutableList<String>{
+    val db = Firebase.firestore
+    val auth = FirebaseAuth.getInstance()
+    db.collection("Users").document(auth.currentUser?.uid.toString()).collection("Saved").get()
+        .addOnSuccessListener { result ->
+            for (document in result) {
+                Pro.add(document["Prompt"].toString())
+            }
+        }
+        .addOnFailureListener { exception ->
+            Log.d("FAILED!", "Error getting documents: ", exception)
+        }
+    return Pro
 }
