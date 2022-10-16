@@ -110,30 +110,28 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
             .padding(top = 5.dp),
             contentAlignment = Alignment.CenterStart
         ) {
-            Column() {
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Button(onClick = { onNextButtonClicked() },
-                        Modifier
-                            .padding(horizontal = 30.dp, vertical = 12.dp)
-                            .width(200.dp)
-                            .height(50.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)), shape = RoundedCornerShape(13. dp)) {
-                        Text(
-                            text = "Create New Story",
-                            style = TextStyle(
-                                fontSize = 20.sp,
-                                color = Color.White,
-                            ),
-                        )
-                    }
+            Column(Modifier.fillMaxWidth()) {
+                Button(onClick = { onNextButtonClicked() },
+                    Modifier
+                        .padding(horizontal = 40.dp, vertical = 12.dp)
+                        .fillMaxWidth()
+                        .height(100.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)),) {
+                    Text(
+                        text = "Create New Story",
+                        style = TextStyle(
+                            fontSize = 20.sp,
+                            color = Color.White
+                        ),
+                    )
                 }
                 Text(
-                    text = "Saved prompts",
+                    text = "Saved Stories",
                     style = TextStyle(
                         fontSize = 30.sp,
                         color = Color.LightGray
                     ),
-                    modifier = Modifier.padding(start = 20.dp, top = 10.dp),
-                    textAlign = TextAlign.Start
+                    modifier = Modifier.fillMaxWidth(0.63f),
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -165,18 +163,21 @@ fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modif
             .border(width = 3.dp, color = Color(0XFFFF772A), shape = RoundedCornerShape(22.dp))
             .clip(shape = RoundedCornerShape(10.dp)),
 
-        shape = RoundedCornerShape(22.dp)
+        shape = RoundedCornerShape(10.dp),
     ) {
-        Column(modifier = Modifier.background(color=Color(0xFF1A1A1A))) {
+        Column(
+            modifier = Modifier.background(color=Color(0xFF1A1A1A)),
+            verticalArrangement = Arrangement.Top,
+        ) {
             Text(text = type ,style = TextStyle(fontSize = 28.sp, color = Color(0xFFFFFFFF )), modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 2.dp, vertical = 3.dp), textAlign = TextAlign.Center,)
-            Text(text = prompt , style = TextStyle(fontSize = 18.sp ,color = Color.White , textAlign = TextAlign.Center) , modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 4.dp), textAlign = TextAlign.Start,)
+            Text(text = "Prompt: " + prompt , style = TextStyle(fontSize = 18.sp ,color = Color.White , textAlign = TextAlign.Start) , modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 9.dp), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(text = story , style = TextStyle(fontSize = 14.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 4.dp), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(text = "Story: " + story.replace("\n", " ") , style = TextStyle(fontSize = 14.sp ,color = Color.Gray , textAlign = TextAlign.Start) , modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 9.dp), maxLines = 3, overflow = TextOverflow.Ellipsis)
+                .padding(horizontal = 16.dp, vertical = 4.dp), maxLines = 3)
             Spacer(Modifier.height(5.dp))
         }
     }
