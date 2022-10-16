@@ -23,7 +23,7 @@ suspend fun generateResponse(user_prompt: String, category: String): String{
 fun getResponse(user_prompt: String, category: String){
     runBlocking {
         launch {
-            story = generateResponse(user_prompt, category)
+            story = generateResponse(user_prompt, category).replace("\n", " ")
         }
     }
 }
