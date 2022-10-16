@@ -10,7 +10,7 @@ A short story writing app called Athena gives users a head start by generating a
 
 ### Application Images:  
                                                                               
-<img src="Images/Img1_LoadPage.png" width="240" height="450"><img src="Images/Img2_SignUp.png" width="240" height="450"><img src="Images/Img4_Profile.png" width="240" height="450"><img src="Images/Img5_HomePage.png" width="240" height="450"><img src="Images/Img6_Goals.png" width="240" height="450"><img src="Images/Img7_Tips.png" width="240" height="450">
+<img src="Images/1_Login.png" width="240" height="450"><img src="Images/2_Signup.png" width="240" height="450"><img src="Images/3_Profile.png" width="240" height="450"><img src="Images/4_Category.png" width="240" height="450"><img src="Images/5_Prompt.png" width="240" height="450"><img src="Images/6_Story.png" width="240" height="450">
 
 
 ### Functionality & Concepts used:
