@@ -118,7 +118,7 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
                         text = "Create New Story",
                         style = TextStyle(
                             fontSize = 20.sp,
-                            color = Color.Black
+                            color = Color.White
                         ),
                     )
                 }
