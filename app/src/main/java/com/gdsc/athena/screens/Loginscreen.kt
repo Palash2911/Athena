@@ -194,7 +194,7 @@ fun LoginScreen(
         )
         {
             Text(
-                text = "Login", style = TextStyle(fontSize = 20.sp, color = Color(0xFFFCFBF7)),
+                text = "Login", style = TextStyle(fontFamily = interFontM,fontSize = 20.sp, color = Color(0xFFFCFBF7)),
                 modifier = Modifier
                     .fillMaxWidth().fillMaxWidth(),
                 textAlign = TextAlign.Center,
@@ -202,7 +202,7 @@ fun LoginScreen(
         }
         Spacer(modifier = Modifier.size(20.dp))
         Row() {
-            Text(text = "Don't have an Account ? ",  style = TextStyle(
+            Text(text = "Don't have an Account ? ",  style = TextStyle(fontFamily = interFontR,
                 color = Color.White, textAlign = TextAlign.Center, fontSize = 16.sp))
             Text(
                 modifier = Modifier.clickable(onClick = {
@@ -210,6 +210,7 @@ fun LoginScreen(
                 }),
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(
+                        fontFamily = interFontB,
                         color = Color(0xFFe85d04)
                     )
                     ){

@@ -1,5 +1,6 @@
 package com.gdsc.athena
 
+import android.graphics.fonts.FontStyle
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,6 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -31,15 +34,19 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import story
 
+
+val interFontB = FontFamily(Font(R.font.inter_bold))
+val interFontM = FontFamily(Font(R.font.inter_med))
+val interFontR = FontFamily(Font(R.font.inter_reg))
 
 @Composable
-fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
+fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit, onitemButtonClicked:()->Unit){
     val auth = FirebaseAuth.getInstance()
     val db = Firebase.firestore
     var name by remember { mutableStateOf("")}
     var email by remember {mutableStateOf("")}
-
     val Stor by remember {mutableStateOf(mutableListOf<String>())}
     val Cat by remember {mutableStateOf(mutableListOf<String>())}
     val Pro by remember {mutableStateOf(mutableListOf<String>())}
@@ -96,14 +103,14 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
             )
         }
         Spacer(modifier = Modifier.size(20.dp))
-        Text(text = name ,style = TextStyle(fontSize = 30.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
+        Text(text = name ,style = TextStyle(fontFamily = interFontB,fontSize = 30.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
             .wrapContentSize(Alignment.Center), textAlign = TextAlign.Center,)
         Spacer(modifier = Modifier.size(4.dp))
         Row(
             Modifier
                 .fillMaxWidth()
                 .height(35.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(text = email , style = TextStyle(fontSize = 20.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth()) }
+            Text(text = email , style = TextStyle(fontFamily = interFontR,fontSize = 20.sp ,color = Color.Gray , textAlign = TextAlign.Center) , modifier = Modifier.fillMaxWidth()) }
 
         Box(modifier = Modifier
             .fillMaxWidth()
@@ -115,10 +122,11 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
                     Modifier
                         .padding(horizontal = 40.dp, vertical = 12.dp)
                         .fillMaxWidth()
-                        .height(100.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)),) {
+                        .height(63.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)),) {
                     Text(
                         text = "Create New Story",
                         style = TextStyle(
+                            fontFamily = interFontM,
                             fontSize = 20.sp,
                             color = Color.White
                         ),
@@ -127,10 +135,11 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
                 Text(
                     text = "Saved Stories",
                     style = TextStyle(
+                        fontFamily = interFontB,
                         fontSize = 30.sp,
                         color = Color.LightGray
                     ),
-                    modifier = Modifier.fillMaxWidth(0.63f),
+                    modifier = Modifier.fillMaxWidth(0.7f).padding(start = 18.dp),
                     textAlign = TextAlign.Center
                 )
             }
@@ -147,6 +156,10 @@ fun ProfileScreen(onNextButtonClicked:()->Unit, onPrevButtonClicked:()->Unit){
                     type = Cat[it],
                     prompt = Pro[it],
                     story = Stor[it],
+                    modifier = Modifier.clickable {
+                        story = Stor[it]
+                        onitemButtonClicked()
+                    }
                 )
             }
         }
@@ -169,13 +182,13 @@ fun CustomPrompt(type: String, prompt : String, story : String , modifier: Modif
             modifier = Modifier.background(color=Color(0xFF1A1A1A)),
             verticalArrangement = Arrangement.Top,
         ) {
-            Text(text = type ,style = TextStyle(fontSize = 28.sp, color = Color(0xFFFFFFFF )), modifier = Modifier
+            Text(text = type ,style = TextStyle(fontFamily = interFontR,fontSize = 28.sp, color = Color(0xFFFFFFFF )), modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 4.dp), textAlign = TextAlign.Start,)
-            Text(text = "Prompt: " + prompt , style = TextStyle(fontSize = 18.sp ,color = Color.White , textAlign = TextAlign.Start) , modifier = Modifier
+            Text(text = "Prompt: " + prompt , style = TextStyle(fontFamily = interFontR,fontSize = 18.sp ,color = Color.White , textAlign = TextAlign.Start) , modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 4.dp), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(text = "Story: " + story.replace("\n", " ") , style = TextStyle(fontSize = 14.sp ,color = Color.Gray , textAlign = TextAlign.Start) , modifier = Modifier
+            Text(text = "Story: " + story.replace("\n", " ") , style = TextStyle(fontFamily = interFontB,fontSize = 14.sp ,color = Color.Gray , textAlign = TextAlign.Start) , modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 4.dp), maxLines = 3)
             Spacer(Modifier.height(5.dp))

@@ -35,6 +35,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gdsc.athena.interFontB
+import com.gdsc.athena.interFontM
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -188,7 +190,7 @@ fun createAccount( onNextButtonClicked: () -> Unit,
         )
         {
             Text(
-                text = "Create account", style = TextStyle(fontSize = 20.sp, color = Color(0xFFFCFBF7)),
+                text = "Create account", style = TextStyle(fontFamily = interFontB,fontSize = 20.sp, color = Color(0xFFFCFBF7)),
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxWidth(),
@@ -197,7 +199,7 @@ fun createAccount( onNextButtonClicked: () -> Unit,
         }
         Spacer(modifier = Modifier.size(20.dp))
         Row() {
-            Text(text = "Already have an Account ? ",  style = TextStyle(
+            Text(text = "Already have an Account ? ",  style = TextStyle(fontFamily = interFontM,
                 color = Color.White, textAlign = TextAlign.Center, fontSize = 16.sp))
             Text(
                 modifier = Modifier.clickable(onClick = {
@@ -205,6 +207,7 @@ fun createAccount( onNextButtonClicked: () -> Unit,
                 }),
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(
+                        fontFamily = interFontB,
                         color = Color(0xFFe85d04)
                     )
                     ){

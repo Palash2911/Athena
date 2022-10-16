@@ -3,7 +3,7 @@ import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
 import kotlinx.coroutines.*
 
-val apiKey = ""
+val apiKey = "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"
 val openAI = OpenAI(apiKey)
 var story = ""
 

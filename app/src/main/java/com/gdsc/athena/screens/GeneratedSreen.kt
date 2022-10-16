@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -108,9 +109,9 @@ fun genretedtScreen(
                     label = {
                         Text(
                             text = "Generated Story",
-                            style = TextStyle(color = Color.White, fontSize = 22.sp),
+                            style = TextStyle(fontFamily = interFontB,color = Color.White, fontSize = 22.sp),
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(all = 16.dp)
+                            modifier = Modifier.padding(start = 50.dp, top = 20.dp, bottom = 50.dp)
                         )
                     },
                     value = text,

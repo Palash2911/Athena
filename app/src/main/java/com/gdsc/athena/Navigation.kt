@@ -97,7 +97,9 @@ fun LoginScreens(
                 onNextButtonClicked = { navController.navigate(TitleSc.SelectionSc.name) },
                      onPrevButtonClicked = {
                 navController.navigate(TitleSc.Start.name)
-            }
+            }, onitemButtonClicked = {
+                    navController.navigate(TitleSc.GeneratedS.name)
+                }
             )
         }
         composable(route = TitleSc.CreateS.name) {

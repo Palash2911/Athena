@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gdsc.athena.interFontM
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -78,6 +79,7 @@ fun PromtScreen(
                 label = {
                         Text(text = "Enter Your Prompt Here",
                         style = TextStyle(
+                            fontFamily = interFontM,
                             fontSize = 18.sp, fontWeight = FontWeight.Bold,
                             color = Color.White,
                         )
@@ -112,7 +114,7 @@ fun PromtScreen(
         },shape = RoundedCornerShape(16), colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFF772A)), modifier = Modifier
             .fillMaxWidth(0.8f)
             .fillMaxHeight(0.18f)) {
-                Text(text = "Generate" ,style = TextStyle(fontSize = 25.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
+                Text(text = "Generate" ,style = TextStyle(fontFamily = interFontM, fontSize = 25.sp , color = Color(0xFFFCFBF7)), modifier = Modifier
                     .fillMaxHeight()
                     .wrapContentSize(Alignment.CenterStart), textAlign = TextAlign.Left,)
             }

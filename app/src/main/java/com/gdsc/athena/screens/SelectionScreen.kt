@@ -21,6 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,6 +36,9 @@ import com.google.firebase.ktx.Firebase
 fun SelectionScreen(
     onNextButtonClicked: () -> Unit,
 ){
+    val interFontB = FontFamily(Font(R.font.inter_bold))
+    val interFontM = FontFamily(Font(R.font.inter_med))
+    val interFontR = FontFamily(Font(R.font.inter_reg))
     val auth = FirebaseAuth.getInstance()
     val db = Firebase.firestore
     val context = LocalContext.current
@@ -48,7 +53,7 @@ fun SelectionScreen(
             ) {
                 Text(
                     text = "Categories",
-                    style = TextStyle(fontSize = 50.sp, color = Color(0xFFFFFFFF)),
+                    style = TextStyle(fontFamily = interFontB,fontSize = 50.sp, color = Color(0xFFFFFFFF)),
                     modifier = Modifier.padding(start = 30.dp, bottom = 15.dp),
                     textAlign = TextAlign.Start
                 )
@@ -149,7 +154,7 @@ fun CustomButton(name: String, painter: Painter, onNextButtonClicked: () -> Unit
                 .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = name, style = TextStyle(color = Color.White, fontSize = 40.sp, fontWeight = FontWeight.Medium))
+                Text(text = name, style = TextStyle(fontFamily = interFontM,color = Color.White, fontSize = 40.sp, fontWeight = FontWeight.Medium))
             }
         }
     }
